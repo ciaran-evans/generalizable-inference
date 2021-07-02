@@ -85,7 +85,7 @@ p1 <- full_data %>%
   scale_color_manual(values=c("#fcbe4bff", "#748cc2ff", "#d64f96ff")) +
   theme_bw() +
   labs(x = "ConvexPerimeter",
-       y = "Density", color = "Cargo", lty="") +
+       y = "Density", color = "Condition", lty="") +
   theme(legend.position="none")
 
 p2 <- full_data %>%
@@ -96,7 +96,7 @@ p2 <- full_data %>%
   scale_color_manual(values=c("#fcbe4bff", "#748cc2ff", "#d64f96ff")) +
   theme_bw() +
   labs(x = "Noise",
-       y = "Density", color = "Cargo", lty="")  +
+       y = "Density", color = "Condition", lty="")  +
   theme(legend.position="none")
 
 p3 <- full_data %>%
@@ -107,7 +107,7 @@ p3 <- full_data %>%
   scale_color_manual(values=c("#fcbe4bff", "#748cc2ff", "#d64f96ff")) +
   theme_bw() +
   labs(x = "Smoothness",
-       y = "Density", color = "Cargo", lty="") 
+       y = "Density", color = "Condition", lty="") 
 
 legend <- get_legend(p3)
 
@@ -199,7 +199,7 @@ p1 <- validation_data %>%
   theme_bw() +
   labs(x = "Bin mean of classifier predictions", 
        y = "Proportion of events that are puffs",
-       title = "Calibration plot for validation data (Cargos 1 and 2))")
+       title = "Calibration plot for validation data (Conditions 1 and 2))")
 
 p2 <- test_data %>%
   mutate(bin = .bincode(pred, 
@@ -222,7 +222,7 @@ p2 <- test_data %>%
   theme_bw() +
   labs(x = "Bin mean of classifier predictions", 
        y = "Proportion of events that are puffs",
-       title = "Calibration plot for test data (Cargo 3)")
+       title = "Calibration plot for test data (Condition 3)")
 
 p3 <- test_data %>%
   mutate(pred = pred*w1/(pred*w1 + (1 - pred)*w2)) %>%
@@ -246,7 +246,7 @@ p3 <- test_data %>%
   theme_bw() +
   labs(x = "Bin mean of classifier predictions", 
        y = "Proportion of events that are puffs",
-       title = "Calibration plot for test data (Cargo 3), label shift adjustment")
+       title = "Calibration plot for test data (Condition 3), label shift adjustment")
 
 pdf(file = "classifier_calibration_plots.pdf",
     width = 18, height=5)
@@ -271,19 +271,19 @@ p1 <- test_data %>%
   theme_bw() +
   labs(x = "Classifier predicted probability, with label shift correction",
        y = "Estimate of true probability from test data",
-       title = "Assessment of classifier predictions on test data (Cargo 3)")
+       title = "Assessment of classifier predictions on test data (Condition 3)")
 
 p2 <- full_data %>%
   group_by(cargo, cell) %>%
   summarize(puff_mean = mean(smoothness[puff == 1]),
             nonpuff_mean = mean(smoothness[puff == 0])) %>%
   ggplot(aes(x = puff_mean, y = nonpuff_mean, color = cargo)) +
-  geom_point(size=2.5) + 
+  geom_point(size=3) + 
   scale_color_manual(values=c("#fcbe4bff", "#748cc2ff", "#d64f96ff")) +
   theme_bw() +
   labs(x = "Mean Smoothness for puffs in each cell",
        y = "Mean Smoothness for nonpuffs in each cell",
-       color = "Cargo",
+       color = "Condition",
        title = "Relationship between class-conditional means")
 
 pdf(file = "classifier_prediction_assessment.pdf",
@@ -454,6 +454,9 @@ label_independent_results <- read_delim("me_model_real_data_results_label_indepe
                                       trim_ws = TRUE) %>%
   unlist()
 label_independent_results <- label_independent_results[!is.na(label_independent_results)]
+
+label_independent_results[1]
+
 lower <- 2*label_independent_results[1] - quantile(label_independent_results[2:201],
                                                  0.975, na.rm=T)
 upper <- 2*label_independent_results[1] - quantile(label_independent_results[2:201],
@@ -551,7 +554,7 @@ test_data %>%
   labs(x = "Smoothness", y = "Density",
        color = "True labels",
        lty = "Estimated distributions",
-       title = "Mixture model estimation with test data (Cargo 3)")
+       title = "Mixture model estimation with test data (Condition 3)")
 dev.off()
 
 
@@ -569,7 +572,7 @@ input_data <- list(ncells = length(unique(test_data$cell)),
 
 set.seed(7)
 optimize <- optimizing(full_mix, data=input_data)
-
+optimize$par
 fitted_vals <- dnorm(test_data$smoothness,
                      optimize$par[paste("mu_obs[", 
                                         as.numeric(as.factor(test_data$cell)),
@@ -596,7 +599,7 @@ test_data %>%
   labs(x = "Smoothness", y = "Density",
        color = "True labels",
        lty = "Estimated distributions",
-       title = "Mixture model estimation with test data (Cargo 3)")
+       title = "Mixture model estimation with test data (Condition 3)")
 dev.off()
 
 

@@ -1126,7 +1126,7 @@ df %>%
                                      6),
                           command = c(paste("\\toprule \n",  # NEW row
                                             "\\multirow{2}{*}{Assumptions} & \\multirow{2}{*}{Normal?} & \\multicolumn{2}{c|}{Prevalence} & \\multicolumn{2}{c|}{Mixed Effects Model} & \\multicolumn{2}{c|}{Mixture Model} \\\\ \n",
-                                            "& & Mean & Coverage & Mean & Coverage & Mean & Coverage \\\\ \n"
+                                            "& & Bias & Coverage & Bias & Coverage & Bias & Coverage \\\\ \n"
                           ),
                           paste("\\bottomrule \n"  # paste is used as it is more flexible regarding adding lines
                           )
@@ -1189,7 +1189,7 @@ df %>%
                                      6),
                           command = c(paste("\\toprule \n",  # NEW row
                                             "\\multirow{2}{*}{Assumptions} & \\multirow{2}{*}{Normal?} & \\multicolumn{2}{c|}{Mixed Effects Model} & \\multicolumn{2}{c|}{Mixed Effects, Variance Adjustment} & \\multicolumn{2}{c|}{Mixture Model} \\\\ \n",
-                                            "& & Mean & Coverage & Mean & Coverage & Mean & Coverage \\\\ \n"
+                                            "& & Bias & Coverage & Bias & Coverage & Bias & Coverage \\\\ \n"
                           ),
                           paste("\\bottomrule \n"  # paste is used as it is more flexible regarding adding lines
                           )
