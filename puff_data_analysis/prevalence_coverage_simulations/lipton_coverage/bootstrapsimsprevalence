@@ -1,0 +1,1 @@
+parallel Rscript prevalence_bootstrap_sim.R {1} ::: {1..300}
